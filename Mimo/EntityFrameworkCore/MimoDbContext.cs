@@ -6,11 +6,15 @@ namespace Mimo.EntityFrameworkCore
 {
     public class MimoDbContext : DbContext
     {
-        public DbSet<Course> Courses { get; set; }
-
         public DbSet<Chapter> Chapters { get; set; }
 
+        public DbSet<Course> Courses { get; set; }
+
         public DbSet<Lesson> Lessons { get; set; }
+
+        public DbSet<UserLesson> UserLessons { get; set; }
+
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
