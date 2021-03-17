@@ -1,14 +1,13 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Mimo.Models;
 
 namespace Mimo.EntityFrameworkCore
 {
     public class MimoDbContext : DbContext
     {
+        public DbSet<Course> Courses { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "MimoDb.db" };
