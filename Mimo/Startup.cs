@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Mimo.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,12 @@ namespace Mimo
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            using (var db = new MimoDbContext())
+            {
+                db.Database.EnsureCreated();
+                db.Database.Migrate();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -26,6 +34,9 @@ namespace Mimo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddEntityFrameworkSqlite()
+                .AddDbContext<MimoDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
