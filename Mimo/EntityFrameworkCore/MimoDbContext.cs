@@ -24,5 +24,18 @@ namespace Mimo.EntityFrameworkCore
 
             optionsBuilder.UseSqlite(connection);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Course>(c =>
+            {
+                c.HasData(new Course[]
+                {
+                    new Course{Id=1,CourseName="Swift"},
+                    new Course{Id=2,CourseName="Javascript"},
+                    new Course{Id=3,CourseName="C#"}
+                });
+            });
+        }
     }
 }
