@@ -8,6 +8,8 @@ namespace Mimo.EntityFrameworkCore
     {
         public DbSet<Achievement> Achievements { get; set; }
 
+        public DbSet<AchievementType> AchievementTypes { get; set; }
+
         public DbSet<Chapter> Chapters { get; set; }
 
         public DbSet<Course> Courses { get; set; }
