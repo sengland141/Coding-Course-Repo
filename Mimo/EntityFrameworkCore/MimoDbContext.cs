@@ -6,11 +6,15 @@ namespace Mimo.EntityFrameworkCore
 {
     public class MimoDbContext : DbContext
     {
+        public DbSet<Achievement> Achievements { get; set; }
+
         public DbSet<Chapter> Chapters { get; set; }
 
         public DbSet<Course> Courses { get; set; }
 
         public DbSet<Lesson> Lessons { get; set; }
+
+        public DbSet<UserAchievement> UserAchievements { get; set; }
 
         public DbSet<UserLesson> UserLessons { get; set; }
 
