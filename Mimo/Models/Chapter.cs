@@ -8,7 +8,7 @@ namespace Mimo.Models
 
         public string ChapterName { get; set; }
 
-        public int Order { get; set; }
+        public int ChapterPosition { get; set; }
 
         public int CourseId { get; set; }
 

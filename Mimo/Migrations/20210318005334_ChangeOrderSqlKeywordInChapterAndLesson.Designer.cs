@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mimo.EntityFrameworkCore;
 
 namespace Mimo.Migrations
 {
     [DbContext(typeof(MimoDbContext))]
-    partial class MimoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210318005334_ChangeOrderSqlKeywordInChapterAndLesson")]
+    partial class ChangeOrderSqlKeywordInChapterAndLesson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,50 +38,6 @@ namespace Mimo.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Chapters");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ChapterName = "Chapter 1",
-                            ChapterPosition = 1,
-                            CourseId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ChapterName = "Chapter 2",
-                            ChapterPosition = 2,
-                            CourseId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ChapterName = "Chapter 1",
-                            ChapterPosition = 1,
-                            CourseId = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ChapterName = "Chapter 2",
-                            ChapterPosition = 2,
-                            CourseId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ChapterName = "Chapter 1",
-                            ChapterPosition = 1,
-                            CourseId = 3
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ChapterName = "Chapter 2",
-                            ChapterPosition = 2,
-                            CourseId = 3
-                        });
                 });
 
             modelBuilder.Entity("Mimo.Models.Course", b =>
@@ -133,50 +91,6 @@ namespace Mimo.Migrations
                     b.HasIndex("ChapterId");
 
                     b.ToTable("Lessons");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ChapterId = 1,
-                            LessonName = "Lesson 1",
-                            LessonPosition = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ChapterId = 1,
-                            LessonName = "Lesson 2",
-                            LessonPosition = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ChapterId = 1,
-                            LessonName = "Lesson 3",
-                            LessonPosition = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ChapterId = 1,
-                            LessonName = "Lesson 4",
-                            LessonPosition = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ChapterId = 1,
-                            LessonName = "Lesson 5",
-                            LessonPosition = 5
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ChapterId = 1,
-                            LessonName = "Lesson 6",
-                            LessonPosition = 6
-                        });
                 });
 
             modelBuilder.Entity("Mimo.Models.User", b =>
@@ -194,14 +108,6 @@ namespace Mimo.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Password = "Password123",
-                            Username = "Scott"
-                        });
                 });
 
             modelBuilder.Entity("Mimo.Models.UserLesson", b =>

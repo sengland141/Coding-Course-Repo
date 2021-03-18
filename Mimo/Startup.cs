@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Mimo.EntityFrameworkCore;
+using Mimo.Interfaces;
+using Mimo.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +39,8 @@ namespace Mimo
 
             services.AddEntityFrameworkSqlite()
                 .AddDbContext<MimoDbContext>();
+
+            services.AddScoped<IUserLessonsService, UserLessonsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

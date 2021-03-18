@@ -8,7 +8,7 @@ namespace Mimo.Models
 
         public string LessonName { get; set; }
 
-        public int Order { get; set; }
+        public int LessonPosition { get; set; }
 
         public int ChapterId { get; set; }
 
