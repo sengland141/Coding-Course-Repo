@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Mimo.Services
 {
-    public class UserLessonsService : IUserLessonsService
+    public class LessonCompletedService : ILessonCompletedService
     {
         private readonly MimoDbContext _mimoDbContext = new MimoDbContext();
 
-        public async Task<HttpStatusCode> PostUserLesson([FromBody] UserLessonDto userLessonDto)
+        public async Task<HttpStatusCode> PostLessonCompleted([FromBody] UserLessonDto userLessonDto)
         {
             UserLesson userLesson = new UserLesson()
             {

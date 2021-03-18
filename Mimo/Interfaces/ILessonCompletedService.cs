@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace Mimo.Interfaces
 {
-    public interface IUserLessonsService
+    public interface ILessonCompletedService
     {
-        Task<HttpStatusCode> PostUserLesson(UserLessonDto userLessonDto);
+        Task<HttpStatusCode> PostLessonCompleted(UserLessonDto userLessonDto);
     }
 }
