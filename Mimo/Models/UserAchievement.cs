@@ -15,5 +15,9 @@ namespace Mimo.Models
 
         [ForeignKey("AchievementId")]
         public Achievement AchievementFk { get; set; }
+
+        public bool Completed { get; set; }
+
+        public int? Progress { get; set; }
     }
 }

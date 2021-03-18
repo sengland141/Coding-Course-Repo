@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mimo.EntityFrameworkCore;
 
 namespace Mimo.Migrations
 {
     [DbContext(typeof(MimoDbContext))]
-    partial class MimoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210318230518_PopulateAchievementData")]
+    partial class PopulateAchievementData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -332,12 +334,6 @@ namespace Mimo.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("AchievementId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Completed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("Progress")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("UserId")

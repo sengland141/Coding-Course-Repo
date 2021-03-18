@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mimo.EntityFrameworkCore;
 
 namespace Mimo.Migrations
 {
     [DbContext(typeof(MimoDbContext))]
-    partial class MimoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210318230101_PopulateAchievementTypes")]
+    partial class PopulateAchievementTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,64 +38,6 @@ namespace Mimo.Migrations
                     b.HasIndex("AchievementTypeId");
 
                     b.ToTable("Achievements");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AchievementTypeId = 1,
-                            Description = "Complete 5 lessons",
-                            RequiredCount = 5
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AchievementTypeId = 1,
-                            Description = "Complete 25 lessons",
-                            RequiredCount = 25
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AchievementTypeId = 1,
-                            Description = "Complete 50 lessons",
-                            RequiredCount = 50
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AchievementTypeId = 2,
-                            Description = "Complete 1 chapter",
-                            RequiredCount = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AchievementTypeId = 2,
-                            Description = "Complete 5 chapters",
-                            RequiredCount = 5
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AchievementTypeId = 3,
-                            Description = "Complete the Swift course",
-                            RequiredCount = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            AchievementTypeId = 4,
-                            Description = "Complete the Javascript course",
-                            RequiredCount = 1
-                        },
-                        new
-                        {
-                            Id = 8,
-                            AchievementTypeId = 5,
-                            Description = "Complete the C# course",
-                            RequiredCount = 1
-                        });
                 });
 
             modelBuilder.Entity("Mimo.Models.AchievementType", b =>
@@ -332,12 +276,6 @@ namespace Mimo.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("AchievementId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Completed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("Progress")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("UserId")
