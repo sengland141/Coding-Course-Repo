@@ -92,7 +92,9 @@ namespace Mimo.EntityFrameworkCore
                     new Lesson { Id=3, LessonName="Lesson 3", LessonPosition=3, ChapterId=1, Order=3 },
                     new Lesson { Id=4, LessonName="Lesson 4", LessonPosition=4, ChapterId=1, Order=4 },
                     new Lesson { Id=5, LessonName="Lesson 5", LessonPosition=5, ChapterId=1, Order=5 },
-                    new Lesson { Id=6, LessonName="Lesson 6", LessonPosition=6, ChapterId=1, Order=6 }
+                    new Lesson { Id=6, LessonName="Lesson 6", LessonPosition=6, ChapterId=1, Order=6 },
+                    new Lesson { Id=7, LessonName="Lesson 1", LessonPosition=1, ChapterId=2, Order=1 },
+                    new Lesson { Id=8, LessonName="Lesson 2", LessonPosition=2, ChapterId=2, Order=2 }
                 });
             });
 
