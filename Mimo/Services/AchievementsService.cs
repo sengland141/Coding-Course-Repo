@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Mimo.EntityFrameworkCore;
 using Mimo.Interfaces;
-using Mimo.Models;
 using Mimo.Models.Dtos.Achievements;
 using Mimo.Models.Dtos.UserAchievements;
 using System;
