@@ -14,6 +14,6 @@ namespace Mimo.Interfaces
 
         Task<HttpStatusCode> PostUserAchievement(PostUserAchievementDto input);
 
-        Task ProgressUserAchievement(AchievementDto achievementDto, int userId);
+        Task<HttpStatusCode> ProgressUserAchievement(AchievementDto achievementDto, int userId);
     }
 }

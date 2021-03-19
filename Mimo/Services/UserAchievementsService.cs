@@ -90,7 +90,7 @@ namespace Mimo.Services
             return HttpStatusCode.OK;
         }
 
-        public async Task ProgressUserAchievement(AchievementDto achievementDto, int userId)
+        public async Task<HttpStatusCode> ProgressUserAchievement(AchievementDto achievementDto, int userId)
         {
             UserAchievement userAchievement = await _mimoDbContext.UserAchievements
                 .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
@@ -104,6 +104,8 @@ namespace Mimo.Services
             }
 
             await _mimoDbContext.SaveChangesAsync();
+
+            return HttpStatusCode.OK;
         }
     }
 }

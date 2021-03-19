@@ -150,9 +150,7 @@ namespace Mimo.Services
 
             if (uncompletedLessonIds.Length == 0)
             {
-                await _userAchievementsService.ProgressUserAchievement(achievementDto, userId);
-
-                return HttpStatusCode.OK;
+                return await _userAchievementsService.ProgressUserAchievement(achievementDto, userId);
             }
 
             return HttpStatusCode.OK;
