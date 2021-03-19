@@ -14,5 +14,7 @@ namespace Mimo.Models
 
         [ForeignKey("CourseId")]
         public Course CourseFk { get; set; }
+
+        public int Order { get; set; }
     }
 }

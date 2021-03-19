@@ -42,9 +42,9 @@ namespace Mimo.Services
                         case "LessonCount":
                             await UpdateLessonCountAchievement(achievementDto, input.UserId, userAchievementDtos);
                             return HttpStatusCode.OK;
-                        //case "ChapterCount":
-                        //    await UpdateChapterCountAchievement(achievementDto, input.UserId, userAchievementDtos);
-                        //    return HttpStatusCode.OK;
+                        case "ChapterCount":
+                            await UpdateChapterCountAchievement(achievementDto, input.UserId, input.LessonId, userAchievementDtos);
+                            return HttpStatusCode.OK;
                         //case "CompleteSwiftCourse":
                         //    await UpdateCompleteSwiftCourseAchievement(achievementDto, input.UserId, userAchievementDtos);
                         //    return HttpStatusCode.OK;
@@ -102,7 +102,7 @@ namespace Mimo.Services
         private async Task<HttpStatusCode> UpdateLessonCountAchievement(AchievementDto achievementDto, int userId, List<UserAchievementDto> userAchievementDtos)
         {
             UserAchievementDto lessonCountUserAchievementDto = userAchievementDtos
-                .Where(uad => uad.AchievementTypeName == "LessonCount")
+                .Where(uad => uad.AchievementId == achievementDto.Id)
                 .FirstOrDefault();
 
             if (lessonCountUserAchievementDto == null)
@@ -136,28 +136,72 @@ namespace Mimo.Services
             }     
         }
 
-        //private async Task<HttpStatusCode> UpdateChapterCountAchievement(AchievementDto achievementDto, int userId, List<UserAchievementDto> userAchievementDtos)
-        //{
-        //    List<UserAchievementDto> lessonCountUserAchievementDtos = userAchievementDtos
-        //        .Where(uad => uad.AchievementTypeName == "ChapterCount").ToList();
-        //}
+        private async Task<HttpStatusCode> UpdateChapterCountAchievement(AchievementDto achievementDto, int userId, int lessonId, List<UserAchievementDto> userAchievementDtos)
+        {
+
+            var lastLesson = await _mimoDbContext.Lessons
+                .Where(l => l.Id == lessonId)
+                .Select(l => new
+                {
+                    l.Id,
+                    l.Order
+                })
+                .OrderByDescending(l => l.Order)
+                .FirstOrDefaultAsync();
+
+            if (lastLesson.Id == lessonId)
+            {
+                UserAchievementDto chapterCountUserAchievementDto = userAchievementDtos
+                    .Where(uad => uad.AchievementId == achievementDto.Id)
+                    .FirstOrDefault();
+                
+                if (chapterCountUserAchievementDto == null)
+                {
+                    PostUserAchievementDto postUserAchievementDto = new PostUserAchievementDto
+                    {
+                        AchievementId = achievementDto.Id,
+                        Completed = achievementDto.RequiredCount == 1,
+                        Progress = 1,
+                        UserId = userId
+                    };
+
+                    return await _userAchievementsService.PostUserAchievement(postUserAchievementDto);
+                }
+                else
+                {
+                    UserAchievement userAchievement = await _mimoDbContext.UserAchievements
+                        .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
+                        .FirstOrDefaultAsync();
+
+                    userAchievement.Progress += 1;
+
+                    if (userAchievement.Progress == achievementDto.RequiredCount)
+                    {
+                        userAchievement.Completed = true;
+                    }
+
+                    await _mimoDbContext.SaveChangesAsync();
+
+                    return HttpStatusCode.OK;
+                }
+            }
+
+            return HttpStatusCode.OK;
+        }
 
         //private async Task<HttpStatusCode> UpdateCompleteSwiftCourseAchievement(AchievementDto achievementDto, int userId, List<UserAchievementDto> userAchievementDtos)
         //{
-        //    List<UserAchievementDto> lessonCountUserAchievementDtos = userAchievementDtos
-        //        .Where(uad => uad.AchievementTypeName == "CompleteSwiftCourse").ToList();
+       
         //}
 
         //private async Task<HttpStatusCode> UpdateCompleteJavascriptCourseAchievement(AchievementDto achievementDto, int userId, List<UserAchievementDto> userAchievementDtos)
         //{
-        //    List<UserAchievementDto> lessonCountUserAchievementDtos = userAchievementDtos
-        //        .Where(uad => uad.AchievementTypeName == "CompleteJavascriptCourse").ToList();
+        
         //}
 
         //private async Task<HttpStatusCode> UpdateCSharpCourseAchievement(AchievementDto achievementDto, int userId, List<UserAchievementDto> userAchievementDtos)
         //{
-        //    List<UserAchievementDto> lessonCountUserAchievementDtos = userAchievementDtos
-        //        .Where(uad => uad.AchievementTypeName == "CompleteCSharpCourse").ToList();
+        
         //}
 
     }

@@ -14,5 +14,7 @@ namespace Mimo.Models
 
         [ForeignKey("ChapterId")]
         public Chapter ChapterFk { get; set; }
+
+        public int Order { get; set; }
     }
 }
