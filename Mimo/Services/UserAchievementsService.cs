@@ -18,6 +18,7 @@ namespace Mimo.Services
         public async Task<List<GetUserAchievementDto>> GetUserAchievements(int userId)
         {
             var userAchievements = await _mimoDbContext.UserAchievements
+                .Include(ua => ua.AchievementFk)
                 .Where(ua => ua.UserId == userId)
                 .Select(ua => new
                 {
