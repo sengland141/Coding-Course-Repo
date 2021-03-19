@@ -35,6 +35,11 @@ namespace Mimo.Services
                 List<AchievementDto> achievementDtos = await GetAllAchievements();
                 List<UserAchievementDto> userAchievementDtos = await _userAchievementsService.GetAllUserAchievements(input.UserId);
 
+                int currentChapterId = await _mimoDbContext.Lessons
+                    .Where(l => l.Id == input.LessonId)
+                    .Select(l => l.ChapterId)
+                    .FirstOrDefaultAsync();
+
                 foreach (AchievementDto achievementDto in achievementDtos)
                 {
                     switch (achievementDto.AchievementTypeName)
@@ -43,7 +48,7 @@ namespace Mimo.Services
                             await UpdateLessonCountAchievement(achievementDto, input.UserId, userAchievementDtos);
                             break;
                         case "ChapterCount":
-                            await UpdateChapterCountAchievement(achievementDto, input.UserId, input.LessonId, userAchievementDtos);
+                            await UpdateChapterCountAchievement(achievementDto, input.UserId, input.LessonId, currentChapterId, userAchievementDtos);
                             break;
                         case "CompleteSwiftCourse":
                             await UpdateCompleteSwiftCourseAchievement(achievementDto, input.UserId, input.LessonId, userAchievementDtos);
@@ -138,9 +143,10 @@ namespace Mimo.Services
             }     
         }
 
-        private async Task<HttpStatusCode> UpdateChapterCountAchievement(AchievementDto achievementDto, int userId, int lessonId, List<UserAchievementDto> userAchievementDtos)
+        private async Task<HttpStatusCode> UpdateChapterCountAchievement(AchievementDto achievementDto, int userId, int lessonId, int chapterId, List<UserAchievementDto> userAchievementDtos)
         {
             var lastLesson = await _mimoDbContext.Lessons
+                .Where(l => l.ChapterId == chapterId)
                 .Select(l => new
                 {
                     l.Id,
@@ -198,62 +204,59 @@ namespace Mimo.Services
 
             if (courseName == "Swift")
             {
+                var lastChapter = await _mimoDbContext.Chapters
+                    .Select(c => new
+                    {
+                        c.Order,
+                        c.Id
+                    })
+                    .OrderByDescending(c => c.Order)
+                    .FirstOrDefaultAsync();
+
                 var lastLesson = await _mimoDbContext.Lessons
+                    .Where(l => l.ChapterId == lastChapter.Id)
                     .Select(l => new
                     {
                         l.Id,
-                        l.Order,
-                        l.ChapterId
+                        l.Order
                     })
                     .OrderByDescending(l => l.Order)
                     .FirstOrDefaultAsync();
 
                 if (lastLesson.Id == lessonId)
                 {
-                    var lastChapter = await _mimoDbContext.Chapters
-                        .Select(c => new
-                        {
-                            c.Id,
-                            c.Order
-                        })
-                        .OrderByDescending(c => c.Order)
-                        .FirstOrDefaultAsync();
+                    UserAchievementDto chapterCountUserAchievementDto = userAchievementDtos
+                    .Where(uad => uad.AchievementId == achievementDto.Id)
+                    .FirstOrDefault();
 
-                    if (lastChapter.Id == lastLesson.ChapterId)
+                    if (chapterCountUserAchievementDto == null)
                     {
-                        UserAchievementDto chapterCountUserAchievementDto = userAchievementDtos
-                        .Where(uad => uad.AchievementId == achievementDto.Id)
-                        .FirstOrDefault();
-
-                        if (chapterCountUserAchievementDto == null)
+                        PostUserAchievementDto postUserAchievementDto = new PostUserAchievementDto
                         {
-                            PostUserAchievementDto postUserAchievementDto = new PostUserAchievementDto
-                            {
-                                AchievementId = achievementDto.Id,
-                                Completed = achievementDto.RequiredCount == 1,
-                                Progress = 1,
-                                UserId = userId
-                            };
+                            AchievementId = achievementDto.Id,
+                            Completed = achievementDto.RequiredCount == 1,
+                            Progress = 1,
+                            UserId = userId
+                        };
 
-                            return await _userAchievementsService.PostUserAchievement(postUserAchievementDto);
-                        }
-                        else
+                        return await _userAchievementsService.PostUserAchievement(postUserAchievementDto);
+                    }
+                    else
+                    {
+                        UserAchievement userAchievement = await _mimoDbContext.UserAchievements
+                            .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
+                            .FirstOrDefaultAsync();
+
+                        userAchievement.Progress += 1;
+
+                        if (userAchievement.Progress == achievementDto.RequiredCount)
                         {
-                            UserAchievement userAchievement = await _mimoDbContext.UserAchievements
-                                .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
-                                .FirstOrDefaultAsync();
-
-                            userAchievement.Progress += 1;
-
-                            if (userAchievement.Progress == achievementDto.RequiredCount)
-                            {
-                                userAchievement.Completed = true;
-                            }
-
-                            await _mimoDbContext.SaveChangesAsync();
-
-                            return HttpStatusCode.OK;
+                            userAchievement.Completed = true;
                         }
+
+                        await _mimoDbContext.SaveChangesAsync();
+
+                        return HttpStatusCode.OK;
                     }
                 }
             }
