@@ -14,7 +14,7 @@ namespace Mimo.Services
 
         public async Task<HttpStatusCode> PostLessonCompleted([FromBody] UserLessonDto userLessonDto)
         {
-            UserLesson userLesson = new UserLesson()
+            UserLesson userLesson = new UserLesson
             {
                 LessonId = userLessonDto.LessonId,
                 UserId = userLessonDto.UserId,

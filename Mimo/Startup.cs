@@ -33,7 +33,9 @@ namespace Mimo
             services.AddEntityFrameworkSqlite()
                 .AddDbContext<MimoDbContext>();
 
+            services.AddScoped<IAchievementsService, AchievementsService>();
             services.AddScoped<ILessonCompletedService, LessonCompletedService>();
+            services.AddScoped<IUserAchievementsService, UserAchievementsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
