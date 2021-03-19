@@ -89,12 +89,17 @@ namespace Mimo.EntityFrameworkCore
                 {
                     new Lesson { Id=1, LessonName="Lesson 1", LessonPosition=1, ChapterId=1, Order=1 },
                     new Lesson { Id=2, LessonName="Lesson 2", LessonPosition=2, ChapterId=1, Order=2 },
-                    new Lesson { Id=3, LessonName="Lesson 3", LessonPosition=3, ChapterId=1, Order=3 },
-                    new Lesson { Id=4, LessonName="Lesson 4", LessonPosition=4, ChapterId=1, Order=4 },
-                    new Lesson { Id=5, LessonName="Lesson 5", LessonPosition=5, ChapterId=1, Order=5 },
-                    new Lesson { Id=6, LessonName="Lesson 6", LessonPosition=6, ChapterId=1, Order=6 },
-                    new Lesson { Id=7, LessonName="Lesson 1", LessonPosition=1, ChapterId=2, Order=1 },
-                    new Lesson { Id=8, LessonName="Lesson 2", LessonPosition=2, ChapterId=2, Order=2 }
+                    new Lesson { Id=3, LessonName="Lesson 1", LessonPosition=1, ChapterId=2, Order=1 },
+                    new Lesson { Id=4, LessonName="Lesson 2", LessonPosition=2, ChapterId=2, Order=2 },
+                    new Lesson { Id=5, LessonName="Lesson 1", LessonPosition=1, ChapterId=3, Order=1 },
+                    new Lesson { Id=6, LessonName="Lesson 2", LessonPosition=2, ChapterId=3, Order=2 },
+                    new Lesson { Id=7, LessonName="Lesson 1", LessonPosition=1, ChapterId=4, Order=1 },
+                    new Lesson { Id=8, LessonName="Lesson 2", LessonPosition=2, ChapterId=4, Order=2 },
+                    new Lesson { Id=9, LessonName="Lesson 1", LessonPosition=1, ChapterId=5, Order=1 },
+                    new Lesson { Id=10, LessonName="Lesson 2", LessonPosition=2, ChapterId=5, Order=2 },
+                    new Lesson { Id=11, LessonName="Lesson 1", LessonPosition=1, ChapterId=6, Order=1 },
+                    new Lesson { Id=12, LessonName="Lesson 2", LessonPosition=2, ChapterId=6, Order=2 },
+                    
                 });
             });
 
