@@ -104,7 +104,11 @@ namespace Mimo.EntityFrameworkCore
 
             modelBuilder.Entity<User>(u =>
             {
-                u.HasData(new User { Id = 1, Username = "Scott", Password = "Password123" });
+                u.HasData(new User[]
+                {
+                    new User { Id = 1, Username = "Scott", Password = "Password123" },
+                    new User { Id = 2, Username = "Bob", Password = "Password456"}
+                });
             });
         }
     }
