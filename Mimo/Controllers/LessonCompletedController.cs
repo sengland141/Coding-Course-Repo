@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Mimo.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("lesson-completed")]
     public class LessonCompletedController : Controller
     {
         private readonly ILessonCompletedService _lessonCompletedService;
