@@ -14,6 +14,37 @@ namespace Mimo.Services
     {
         private readonly MimoDbContext _mimoDbContext = new MimoDbContext();
 
+        public async Task<List<GetUserAchievementDto>> GetUserAchievements(int userId)
+        {
+            var userAchievements = await _mimoDbContext.UserAchievements
+                .Where(ua => ua.UserId == userId)
+                .Select(ua => new
+                {
+                    ua.AchievementId,
+                    ua.Completed,
+                    ua.Progress,
+                    ua.AchievementFk.Description
+                })
+                .ToListAsync();
+
+            List<GetUserAchievementDto> getUserAchievementDtos = new List<GetUserAchievementDto>();
+
+            foreach (var userAchievement in userAchievements)
+            {
+                GetUserAchievementDto getUserAchievementDto = new GetUserAchievementDto
+                {
+                    AchievementId = userAchievement.AchievementId,
+                    AchievementDescription = userAchievement.Description,
+                    Completed = userAchievement.Completed,
+                    Progress = userAchievement.Progress
+                };
+
+                getUserAchievementDtos.Add(getUserAchievementDto);
+            }
+
+            return getUserAchievementDtos;
+        }
+
         public async Task<List<UserAchievementDto>> GetAllUserAchievements(int userId)
         {
             var userAchievements = await _mimoDbContext.UserAchievements

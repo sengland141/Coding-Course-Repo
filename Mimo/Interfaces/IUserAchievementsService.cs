@@ -7,6 +7,8 @@ namespace Mimo.Interfaces
 {
     public interface IUserAchievementsService
     {
+        Task<List<GetUserAchievementDto>> GetUserAchievements(int userId);
+
         Task<List<UserAchievementDto>> GetAllUserAchievements(int userId);
 
         Task<HttpStatusCode> PostUserAchievement(PostUserAchievementDto input);
