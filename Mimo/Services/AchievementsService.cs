@@ -45,15 +45,15 @@ namespace Mimo.Services
                         case "ChapterCount":
                             await UpdateChapterCountAchievement(achievementDto, input.UserId, input.LessonId, userAchievementDtos);
                             return HttpStatusCode.OK;
-                        //case "CompleteSwiftCourse":
-                        //    await UpdateCompleteSwiftCourseAchievement(achievementDto, input.UserId, userAchievementDtos);
-                        //    return HttpStatusCode.OK;
-                        //case "CompleteJavascriptCourse":
-                        //    await UpdateCompleteJavascriptCourseAchievement(achievementDto, input.UserId, userAchievementDtos);
-                        //    return HttpStatusCode.OK;
-                        //case "CompleteCSharpCourse":
-                        //    await UpdateCSharpCourseAchievement(achievementDto, input.UserId, userAchievementDtos);
-                        //    return HttpStatusCode.OK;
+                        case "CompleteSwiftCourse":
+                            await UpdateCompleteSwiftCourseAchievement(achievementDto, input.UserId, input.LessonId, userAchievementDtos);
+                            return HttpStatusCode.OK;
+                        case "CompleteJavascriptCourse":
+                            await UpdateCompleteJavascriptCourseAchievement(achievementDto, input.UserId, input.LessonId, userAchievementDtos);
+                            return HttpStatusCode.OK;
+                        case "CompleteCSharpCourse":
+                            await UpdateCSharpCourseAchievement(achievementDto, input.UserId, input.LessonId, userAchievementDtos);
+                            return HttpStatusCode.OK;
                         default:
                             throw new Exception("Achievement type could not be found");
                     }
@@ -138,9 +138,7 @@ namespace Mimo.Services
 
         private async Task<HttpStatusCode> UpdateChapterCountAchievement(AchievementDto achievementDto, int userId, int lessonId, List<UserAchievementDto> userAchievementDtos)
         {
-
             var lastLesson = await _mimoDbContext.Lessons
-                .Where(l => l.Id == lessonId)
                 .Select(l => new
                 {
                     l.Id,
@@ -189,20 +187,220 @@ namespace Mimo.Services
             return HttpStatusCode.OK;
         }
 
-        //private async Task<HttpStatusCode> UpdateCompleteSwiftCourseAchievement(AchievementDto achievementDto, int userId, List<UserAchievementDto> userAchievementDtos)
-        //{
-       
-        //}
+        private async Task<HttpStatusCode> UpdateCompleteSwiftCourseAchievement(AchievementDto achievementDto, int userId, int lessonId, List<UserAchievementDto> userAchievementDtos)
+        {
+            string courseName = await _mimoDbContext.Lessons
+                .Where(l => l.Id == lessonId)
+                .Select(l => l.ChapterFk.CourseFk.CourseName)
+                .FirstOrDefaultAsync();
 
-        //private async Task<HttpStatusCode> UpdateCompleteJavascriptCourseAchievement(AchievementDto achievementDto, int userId, List<UserAchievementDto> userAchievementDtos)
-        //{
-        
-        //}
+            if (courseName == "Swift")
+            {
+                var lastLesson = await _mimoDbContext.Lessons
+                    .Select(l => new
+                    {
+                        l.Id,
+                        l.Order,
+                        l.ChapterId
+                    })
+                    .OrderByDescending(l => l.Order)
+                    .FirstOrDefaultAsync();
 
-        //private async Task<HttpStatusCode> UpdateCSharpCourseAchievement(AchievementDto achievementDto, int userId, List<UserAchievementDto> userAchievementDtos)
-        //{
-        
-        //}
+                if (lastLesson.Id == lessonId)
+                {
+                    var lastChapter = await _mimoDbContext.Chapters
+                        .Select(c => new
+                        {
+                            c.Id,
+                            c.Order
+                        })
+                        .OrderByDescending(c => c.Order)
+                        .FirstOrDefaultAsync();
 
+                    if (lastChapter.Id == lastLesson.ChapterId)
+                    {
+                        UserAchievementDto chapterCountUserAchievementDto = userAchievementDtos
+                        .Where(uad => uad.AchievementId == achievementDto.Id)
+                        .FirstOrDefault();
+
+                        if (chapterCountUserAchievementDto == null)
+                        {
+                            PostUserAchievementDto postUserAchievementDto = new PostUserAchievementDto
+                            {
+                                AchievementId = achievementDto.Id,
+                                Completed = achievementDto.RequiredCount == 1,
+                                Progress = 1,
+                                UserId = userId
+                            };
+
+                            return await _userAchievementsService.PostUserAchievement(postUserAchievementDto);
+                        }
+                        else
+                        {
+                            UserAchievement userAchievement = await _mimoDbContext.UserAchievements
+                                .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
+                                .FirstOrDefaultAsync();
+
+                            userAchievement.Progress += 1;
+
+                            if (userAchievement.Progress == achievementDto.RequiredCount)
+                            {
+                                userAchievement.Completed = true;
+                            }
+
+                            await _mimoDbContext.SaveChangesAsync();
+
+                            return HttpStatusCode.OK;
+                        }
+                    }
+                }
+            }
+
+            return HttpStatusCode.OK;
+        }
+
+        private async Task<HttpStatusCode> UpdateCompleteJavascriptCourseAchievement(AchievementDto achievementDto, int userId, int lessonId, List<UserAchievementDto> userAchievementDtos)
+        {
+            string courseName = await _mimoDbContext.Lessons
+                .Where(l => l.Id == lessonId)
+                .Select(l => l.ChapterFk.CourseFk.CourseName)
+                .FirstOrDefaultAsync();
+
+            if (courseName == "Javascript")
+            {
+                var lastLesson = await _mimoDbContext.Lessons
+                    .Select(l => new
+                    {
+                        l.Id,
+                        l.Order,
+                        l.ChapterId
+                    })
+                    .OrderByDescending(l => l.Order)
+                    .FirstOrDefaultAsync();
+
+                if (lastLesson.Id == lessonId)
+                {
+                    var lastChapter = await _mimoDbContext.Chapters
+                        .Select(c => new
+                        {
+                            c.Id,
+                            c.Order
+                        })
+                        .OrderByDescending(c => c.Order)
+                        .FirstOrDefaultAsync();
+
+                    if (lastChapter.Id == lastLesson.ChapterId)
+                    {
+                        UserAchievementDto chapterCountUserAchievementDto = userAchievementDtos
+                        .Where(uad => uad.AchievementId == achievementDto.Id)
+                        .FirstOrDefault();
+
+                        if (chapterCountUserAchievementDto == null)
+                        {
+                            PostUserAchievementDto postUserAchievementDto = new PostUserAchievementDto
+                            {
+                                AchievementId = achievementDto.Id,
+                                Completed = achievementDto.RequiredCount == 1,
+                                Progress = 1,
+                                UserId = userId
+                            };
+
+                            return await _userAchievementsService.PostUserAchievement(postUserAchievementDto);
+                        }
+                        else
+                        {
+                            UserAchievement userAchievement = await _mimoDbContext.UserAchievements
+                                .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
+                                .FirstOrDefaultAsync();
+
+                            userAchievement.Progress += 1;
+
+                            if (userAchievement.Progress == achievementDto.RequiredCount)
+                            {
+                                userAchievement.Completed = true;
+                            }
+
+                            await _mimoDbContext.SaveChangesAsync();
+
+                            return HttpStatusCode.OK;
+                        }
+                    }
+                }
+            }
+
+            return HttpStatusCode.OK;
+        }
+
+        private async Task<HttpStatusCode> UpdateCSharpCourseAchievement(AchievementDto achievementDto, int userId, int lessonId, List<UserAchievementDto> userAchievementDtos)
+        {
+            string courseName = await _mimoDbContext.Lessons
+                .Where(l => l.Id == lessonId)
+                .Select(l => l.ChapterFk.CourseFk.CourseName)
+                .FirstOrDefaultAsync();
+
+            if (courseName == "CSharp")
+            {
+                var lastLesson = await _mimoDbContext.Lessons
+                    .Select(l => new
+                    {
+                        l.Id,
+                        l.Order,
+                        l.ChapterId
+                    })
+                    .OrderByDescending(l => l.Order)
+                    .FirstOrDefaultAsync();
+
+                if (lastLesson.Id == lessonId)
+                {
+                    var lastChapter = await _mimoDbContext.Chapters
+                        .Select(c => new
+                        {
+                            c.Id,
+                            c.Order
+                        })
+                        .OrderByDescending(c => c.Order)
+                        .FirstOrDefaultAsync();
+
+                    if (lastChapter.Id == lastLesson.ChapterId)
+                    {
+                        UserAchievementDto chapterCountUserAchievementDto = userAchievementDtos
+                        .Where(uad => uad.AchievementId == achievementDto.Id)
+                        .FirstOrDefault();
+
+                        if (chapterCountUserAchievementDto == null)
+                        {
+                            PostUserAchievementDto postUserAchievementDto = new PostUserAchievementDto
+                            {
+                                AchievementId = achievementDto.Id,
+                                Completed = achievementDto.RequiredCount == 1,
+                                Progress = 1,
+                                UserId = userId
+                            };
+
+                            return await _userAchievementsService.PostUserAchievement(postUserAchievementDto);
+                        }
+                        else
+                        {
+                            UserAchievement userAchievement = await _mimoDbContext.UserAchievements
+                                .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
+                                .FirstOrDefaultAsync();
+
+                            userAchievement.Progress += 1;
+
+                            if (userAchievement.Progress == achievementDto.RequiredCount)
+                            {
+                                userAchievement.Completed = true;
+                            }
+
+                            await _mimoDbContext.SaveChangesAsync();
+
+                            return HttpStatusCode.OK;
+                        }
+                    }
+                }
+            }
+
+            return HttpStatusCode.OK;
+        }
     }
 }
