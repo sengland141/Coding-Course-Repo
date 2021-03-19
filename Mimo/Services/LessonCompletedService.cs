@@ -37,9 +37,8 @@ namespace Mimo.Services
                 LessonId = userLessonDto.LessonId
             };
 
-            await _achievementsService.UpdateAchievementProgress(updateAchievementProgressDto);
-
             await _mimoDbContext.SaveChangesAsync();    
+            await _achievementsService.UpdateAchievementProgress(updateAchievementProgressDto);
 
             return HttpStatusCode.OK;
         }

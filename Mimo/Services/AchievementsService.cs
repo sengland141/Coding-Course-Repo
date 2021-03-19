@@ -74,7 +74,7 @@ namespace Mimo.Services
                 .Where(ul => ul.LessonId == input.LessonId && ul.UserId == input.UserId)
                 .CountAsync();
 
-            return numberOfTimesCompleted > 0;
+            return numberOfTimesCompleted > 1;
         }
 
         private async Task<List<AchievementDto>> GetAllAchievements()
@@ -136,17 +136,19 @@ namespace Mimo.Services
         {
             await HandleNewUserAchievement(achievementDto, userId, userAchievementDtos);
 
-            var lastLesson = await _mimoDbContext.Lessons
+            int[] lessonIds = await _mimoDbContext.Lessons
                 .Where(l => l.ChapterId == chapterId)
-                .Select(l => new
-                {
-                    l.Id,
-                    l.Order
-                })
-                .OrderByDescending(l => l.Order)
-                .FirstOrDefaultAsync();
+                .Select(c => c.Id)
+                .ToArrayAsync();
 
-            if (lastLesson.Id == lessonId)
+            int[] completedLessonIds = await _mimoDbContext.UserLessons
+                .Where(ul => ul.UserId == userId)
+                .Select(ul => ul.LessonId)
+                .ToArrayAsync();
+
+            int[] uncompletedLessonIds = lessonIds.Where(l => completedLessonIds.All(c => c != l)).ToArray();
+
+            if (uncompletedLessonIds.Length == 0)
             {
                 await _userAchievementsService.ProgressUserAchievement(achievementDto, userId);
 
@@ -243,27 +245,19 @@ namespace Mimo.Services
 
         private async Task<HttpStatusCode> UpdateCourseAchievement(AchievementDto achievementDto, int userId, int lessonId, int courseId, List<UserAchievementDto> userAchievementDtos)
         {
-            var lastChapter = await _mimoDbContext.Chapters
-                .Where(c => c.CourseId == courseId)
-                .Select(c => new
-                {
-                    c.Order,
-                    c.Id
-                })
-                .OrderByDescending(c => c.Order)
-                .FirstOrDefaultAsync();
+            int[] lessonIds = await _mimoDbContext.Lessons
+                .Where(l => l.ChapterFk.CourseId == courseId)
+                .Select(c => c.Id)
+                .ToArrayAsync();
 
-            var lastLesson = await _mimoDbContext.Lessons
-                .Where(l => l.ChapterId == lastChapter.Id)
-                .Select(l => new
-                {
-                    l.Id,
-                    l.Order
-                })
-                .OrderByDescending(l => l.Order)
-                .FirstOrDefaultAsync();
+            int[] completedLessonIds = await _mimoDbContext.UserLessons
+                .Where(ul => ul.UserId == userId)
+                .Select(ul => ul.LessonId)
+                .ToArrayAsync();
 
-            if (lastLesson.Id == lessonId)
+            int[] uncompletedLessonIds = lessonIds.Where(l => completedLessonIds.All(c => c != l)).ToArray();
+
+            if (uncompletedLessonIds.Length == 0)
             {
                 await _userAchievementsService.ProgressUserAchievement(achievementDto, userId);
             }
