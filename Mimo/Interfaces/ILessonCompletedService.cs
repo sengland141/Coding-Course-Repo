@@ -1,11 +1,11 @@
 ﻿using Mimo.Models.Dtos.UserLessons;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Mimo.Interfaces
 {
     public interface ILessonCompletedService
     {
-        Task<HttpStatusCode> PostLessonCompleted(UserLessonDto userLessonDto);
+        Task<HttpResponseMessage> PostLessonCompleted(UserLessonDto userLessonDto);
     }
 }

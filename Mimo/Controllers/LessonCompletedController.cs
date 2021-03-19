@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mimo.Interfaces;
 using Mimo.Models.Dtos.UserLessons;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Mimo.Controllers
@@ -18,7 +18,7 @@ namespace Mimo.Controllers
         }
 
         [HttpPost]
-        public async Task<HttpStatusCode> PostLessonCompleted([FromBody] UserLessonDto userLessonDto)
+        public async Task<HttpResponseMessage> PostLessonCompleted([FromBody] UserLessonDto userLessonDto)
         {
             return await _lessonCompletedService.PostLessonCompleted(userLessonDto);
         }
