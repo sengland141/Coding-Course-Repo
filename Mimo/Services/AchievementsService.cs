@@ -41,19 +41,19 @@ namespace Mimo.Services
                     {
                         case "LessonCount":
                             await UpdateLessonCountAchievement(achievementDto, input.UserId, userAchievementDtos);
-                            return HttpStatusCode.OK;
+                            break;
                         case "ChapterCount":
                             await UpdateChapterCountAchievement(achievementDto, input.UserId, input.LessonId, userAchievementDtos);
-                            return HttpStatusCode.OK;
+                            break;
                         case "CompleteSwiftCourse":
                             await UpdateCompleteSwiftCourseAchievement(achievementDto, input.UserId, input.LessonId, userAchievementDtos);
-                            return HttpStatusCode.OK;
+                            break;
                         case "CompleteJavascriptCourse":
                             await UpdateCompleteJavascriptCourseAchievement(achievementDto, input.UserId, input.LessonId, userAchievementDtos);
-                            return HttpStatusCode.OK;
+                            break;
                         case "CompleteCSharpCourse":
                             await UpdateCSharpCourseAchievement(achievementDto, input.UserId, input.LessonId, userAchievementDtos);
-                            return HttpStatusCode.OK;
+                            break;
                         default:
                             throw new Exception("Achievement type could not be found");
                     }
@@ -94,6 +94,8 @@ namespace Mimo.Services
                     AchievementTypeName = achievement.AchievementTypeName,
                     RequiredCount = achievement.RequiredCount
                 };
+
+                achievementDtos.Add(achievementDto);
             }
 
             return achievementDtos;
