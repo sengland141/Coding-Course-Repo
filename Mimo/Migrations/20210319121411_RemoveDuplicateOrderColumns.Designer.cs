@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mimo.EntityFrameworkCore;
 
 namespace Mimo.Migrations
 {
     [DbContext(typeof(MimoDbContext))]
-    partial class MimoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210319121411_RemoveDuplicateOrderColumns")]
+    partial class RemoveDuplicateOrderColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,6 +256,9 @@ namespace Mimo.Migrations
                     b.Property<int>("LessonPosition")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ChapterId");
@@ -266,84 +271,96 @@ namespace Mimo.Migrations
                             Id = 1,
                             ChapterId = 1,
                             LessonName = "Lesson 1",
-                            LessonPosition = 1
+                            LessonPosition = 1,
+                            Order = 0
                         },
                         new
                         {
                             Id = 2,
                             ChapterId = 1,
                             LessonName = "Lesson 2",
-                            LessonPosition = 2
+                            LessonPosition = 2,
+                            Order = 0
                         },
                         new
                         {
                             Id = 3,
                             ChapterId = 2,
                             LessonName = "Lesson 1",
-                            LessonPosition = 1
+                            LessonPosition = 1,
+                            Order = 0
                         },
                         new
                         {
                             Id = 4,
                             ChapterId = 2,
                             LessonName = "Lesson 2",
-                            LessonPosition = 2
+                            LessonPosition = 2,
+                            Order = 0
                         },
                         new
                         {
                             Id = 5,
                             ChapterId = 3,
                             LessonName = "Lesson 1",
-                            LessonPosition = 1
+                            LessonPosition = 1,
+                            Order = 0
                         },
                         new
                         {
                             Id = 6,
                             ChapterId = 3,
                             LessonName = "Lesson 2",
-                            LessonPosition = 2
+                            LessonPosition = 2,
+                            Order = 0
                         },
                         new
                         {
                             Id = 7,
                             ChapterId = 4,
                             LessonName = "Lesson 1",
-                            LessonPosition = 1
+                            LessonPosition = 1,
+                            Order = 0
                         },
                         new
                         {
                             Id = 8,
                             ChapterId = 4,
                             LessonName = "Lesson 2",
-                            LessonPosition = 2
+                            LessonPosition = 2,
+                            Order = 0
                         },
                         new
                         {
                             Id = 9,
                             ChapterId = 5,
                             LessonName = "Lesson 1",
-                            LessonPosition = 1
+                            LessonPosition = 1,
+                            Order = 0
                         },
                         new
                         {
                             Id = 10,
                             ChapterId = 5,
                             LessonName = "Lesson 2",
-                            LessonPosition = 2
+                            LessonPosition = 2,
+                            Order = 0
                         },
                         new
                         {
                             Id = 11,
                             ChapterId = 6,
                             LessonName = "Lesson 1",
-                            LessonPosition = 1
+                            LessonPosition = 1,
+                            Order = 0
                         },
                         new
                         {
                             Id = 12,
                             ChapterId = 6,
                             LessonName = "Lesson 2",
-                            LessonPosition = 2
+                            LessonPosition = 2,
+                            Order = 0
                         });
                 });
 

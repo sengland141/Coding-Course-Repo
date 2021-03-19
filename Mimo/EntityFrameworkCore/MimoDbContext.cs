@@ -74,12 +74,12 @@ namespace Mimo.EntityFrameworkCore
             {
                 c.HasData(new Chapter[]
                 {
-                    new Chapter { Id=1, ChapterName="Chapter 1", ChapterPosition=1, CourseId=1, Order=1 },
-                    new Chapter { Id=2, ChapterName="Chapter 2", ChapterPosition=2, CourseId=1, Order=2 },
-                    new Chapter { Id=3, ChapterName="Chapter 1", ChapterPosition=1, CourseId=2, Order=1 },
-                    new Chapter { Id=4, ChapterName="Chapter 2", ChapterPosition=2, CourseId=2, Order=2 },
-                    new Chapter { Id=5, ChapterName="Chapter 1", ChapterPosition=1, CourseId=3, Order=1 },
-                    new Chapter { Id=6, ChapterName="Chapter 2", ChapterPosition=2, CourseId=3, Order=2 },
+                    new Chapter { Id=1, ChapterName="Chapter 1", ChapterPosition=1, CourseId=1 },
+                    new Chapter { Id=2, ChapterName="Chapter 2", ChapterPosition=2, CourseId=1 },
+                    new Chapter { Id=3, ChapterName="Chapter 1", ChapterPosition=1, CourseId=2 },
+                    new Chapter { Id=4, ChapterName="Chapter 2", ChapterPosition=2, CourseId=2 },
+                    new Chapter { Id=5, ChapterName="Chapter 1", ChapterPosition=1, CourseId=3 },
+                    new Chapter { Id=6, ChapterName="Chapter 2", ChapterPosition=2, CourseId=3 }
                 });
             });
 
@@ -87,19 +87,18 @@ namespace Mimo.EntityFrameworkCore
             {
                 l.HasData(new Lesson[]
                 {
-                    new Lesson { Id=1, LessonName="Lesson 1", LessonPosition=1, ChapterId=1, Order=1 },
-                    new Lesson { Id=2, LessonName="Lesson 2", LessonPosition=2, ChapterId=1, Order=2 },
-                    new Lesson { Id=3, LessonName="Lesson 1", LessonPosition=1, ChapterId=2, Order=1 },
-                    new Lesson { Id=4, LessonName="Lesson 2", LessonPosition=2, ChapterId=2, Order=2 },
-                    new Lesson { Id=5, LessonName="Lesson 1", LessonPosition=1, ChapterId=3, Order=1 },
-                    new Lesson { Id=6, LessonName="Lesson 2", LessonPosition=2, ChapterId=3, Order=2 },
-                    new Lesson { Id=7, LessonName="Lesson 1", LessonPosition=1, ChapterId=4, Order=1 },
-                    new Lesson { Id=8, LessonName="Lesson 2", LessonPosition=2, ChapterId=4, Order=2 },
-                    new Lesson { Id=9, LessonName="Lesson 1", LessonPosition=1, ChapterId=5, Order=1 },
-                    new Lesson { Id=10, LessonName="Lesson 2", LessonPosition=2, ChapterId=5, Order=2 },
-                    new Lesson { Id=11, LessonName="Lesson 1", LessonPosition=1, ChapterId=6, Order=1 },
-                    new Lesson { Id=12, LessonName="Lesson 2", LessonPosition=2, ChapterId=6, Order=2 },
-                    
+                    new Lesson { Id=1, LessonName="Lesson 1", LessonPosition=1, ChapterId=1 },
+                    new Lesson { Id=2, LessonName="Lesson 2", LessonPosition=2, ChapterId=1 },
+                    new Lesson { Id=3, LessonName="Lesson 1", LessonPosition=1, ChapterId=2 },
+                    new Lesson { Id=4, LessonName="Lesson 2", LessonPosition=2, ChapterId=2 },
+                    new Lesson { Id=5, LessonName="Lesson 1", LessonPosition=1, ChapterId=3 },
+                    new Lesson { Id=6, LessonName="Lesson 2", LessonPosition=2, ChapterId=3 },
+                    new Lesson { Id=7, LessonName="Lesson 1", LessonPosition=1, ChapterId=4 },
+                    new Lesson { Id=8, LessonName="Lesson 2", LessonPosition=2, ChapterId=4 },
+                    new Lesson { Id=9, LessonName="Lesson 1", LessonPosition=1, ChapterId=5 },
+                    new Lesson { Id=10, LessonName="Lesson 2", LessonPosition=2, ChapterId=5 },
+                    new Lesson { Id=11, LessonName="Lesson 1", LessonPosition=1, ChapterId=6 },
+                    new Lesson { Id=12, LessonName="Lesson 2", LessonPosition=2, ChapterId=6 }
                 });
             });
 
