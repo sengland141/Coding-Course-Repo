@@ -2,6 +2,7 @@
 using Mimo.EntityFrameworkCore;
 using Mimo.Interfaces;
 using Mimo.Models;
+using Mimo.Models.Dtos.Achievements;
 using Mimo.Models.Dtos.UserAchievements;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,6 +88,22 @@ namespace Mimo.Services
             await _mimoDbContext.SaveChangesAsync();
 
             return HttpStatusCode.OK;
+        }
+
+        public async Task ProgressUserAchievement(AchievementDto achievementDto, int userId)
+        {
+            UserAchievement userAchievement = await _mimoDbContext.UserAchievements
+                .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
+                .FirstOrDefaultAsync();
+
+            userAchievement.Progress += 1;
+
+            if (userAchievement.Progress == achievementDto.RequiredCount)
+            {
+                userAchievement.Completed = true;
+            }
+
+            await _mimoDbContext.SaveChangesAsync();
         }
     }
 }

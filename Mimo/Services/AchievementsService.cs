@@ -126,18 +126,7 @@ namespace Mimo.Services
             }
             else
             {
-                UserAchievement userAchievement = await _mimoDbContext.UserAchievements
-                    .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
-                    .FirstOrDefaultAsync();
-
-                userAchievement.Progress += 1;
-                
-                if (userAchievement.Progress == achievementDto.RequiredCount)
-                {
-                    userAchievement.Completed = true;
-                }
-
-                await _mimoDbContext.SaveChangesAsync();
+                await _userAchievementsService.ProgressUserAchievement(achievementDto, userId);
 
                 return HttpStatusCode.OK;
             }     
@@ -174,18 +163,7 @@ namespace Mimo.Services
 
             if (lastLesson.Id == lessonId)
             {
-                UserAchievement userAchievement = await _mimoDbContext.UserAchievements
-                    .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
-                    .FirstOrDefaultAsync();
-
-                userAchievement.Progress += 1;
-
-                if (userAchievement.Progress == achievementDto.RequiredCount)
-                {
-                    userAchievement.Completed = true;
-                }
-
-                await _mimoDbContext.SaveChangesAsync();
+                await _userAchievementsService.ProgressUserAchievement(achievementDto, userId);
 
                 return HttpStatusCode.OK;
             }
@@ -240,18 +218,7 @@ namespace Mimo.Services
 
                 if (lastLesson.Id == lessonId)
                 {
-                    UserAchievement userAchievement = await _mimoDbContext.UserAchievements
-                        .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
-                        .FirstOrDefaultAsync();
-
-                    userAchievement.Progress += 1;
-
-                    if (userAchievement.Progress == achievementDto.RequiredCount)
-                    {
-                        userAchievement.Completed = true;
-                    }
-
-                    await _mimoDbContext.SaveChangesAsync();
+                    await _userAchievementsService.ProgressUserAchievement(achievementDto, userId);
 
                     return HttpStatusCode.OK;
                 }
@@ -310,18 +277,7 @@ namespace Mimo.Services
                         }
                         else
                         {
-                            UserAchievement userAchievement = await _mimoDbContext.UserAchievements
-                                .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
-                                .FirstOrDefaultAsync();
-
-                            userAchievement.Progress += 1;
-
-                            if (userAchievement.Progress == achievementDto.RequiredCount)
-                            {
-                                userAchievement.Completed = true;
-                            }
-
-                            await _mimoDbContext.SaveChangesAsync();
+                            await _userAchievementsService.ProgressUserAchievement(achievementDto, userId);
 
                             return HttpStatusCode.OK;
                         }
@@ -382,18 +338,7 @@ namespace Mimo.Services
                         }
                         else
                         {
-                            UserAchievement userAchievement = await _mimoDbContext.UserAchievements
-                                .Where(ua => ua.UserId == userId && ua.AchievementId == achievementDto.Id)
-                                .FirstOrDefaultAsync();
-
-                            userAchievement.Progress += 1;
-
-                            if (userAchievement.Progress == achievementDto.RequiredCount)
-                            {
-                                userAchievement.Completed = true;
-                            }
-
-                            await _mimoDbContext.SaveChangesAsync();
+                            await _userAchievementsService.ProgressUserAchievement(achievementDto, userId);
 
                             return HttpStatusCode.OK;
                         }
@@ -403,5 +348,10 @@ namespace Mimo.Services
 
             return HttpStatusCode.OK;
         }
+
+        //private async Task UpdateCourseAchievement()
+        //{
+
+        //}
     }
 }
