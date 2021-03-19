@@ -2,6 +2,7 @@
 using Mimo.EntityFrameworkCore;
 using Mimo.Interfaces;
 using Mimo.Models;
+using Mimo.Models.Dtos.Achievements;
 using Mimo.Models.Dtos.UserLessons;
 using System.Net;
 using System.Threading.Tasks;
@@ -11,6 +12,12 @@ namespace Mimo.Services
     public class LessonCompletedService : ILessonCompletedService
     {
         private readonly MimoDbContext _mimoDbContext = new MimoDbContext();
+        private readonly IAchievementsService _achievementsService;
+
+        public LessonCompletedService(IAchievementsService achievementsService)
+        {
+            _achievementsService = achievementsService;
+        }
 
         public async Task<HttpStatusCode> PostLessonCompleted([FromBody] UserLessonDto userLessonDto)
         {
@@ -23,6 +30,15 @@ namespace Mimo.Services
             };
 
             await _mimoDbContext.UserLessons.AddAsync(userLesson);
+
+            UpdateAchievementProgressDto updateAchievementProgressDto = new UpdateAchievementProgressDto
+            {
+                UserId = userLessonDto.UserId,
+                LessonId = userLessonDto.LessonId
+            };
+
+            await _achievementsService.UpdateAchievementProgress(updateAchievementProgressDto);
+
             await _mimoDbContext.SaveChangesAsync();    
 
             return HttpStatusCode.OK;
